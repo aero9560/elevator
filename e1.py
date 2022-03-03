@@ -34,7 +34,8 @@ def floor_button(x):
 
 #elevator_no = int(input("enter no. of elevators"))
 
-# provide initial data
+
+"------------------------------------- provide initial data--------------------------------------------------------"
 total_floor = int(input("Enter no. of floors  "))
 starting_floor = []
 
@@ -69,6 +70,9 @@ for _ in range(1, des+1):
     ext.append(direc)
     floor_button(ext)
 #print(external)
+
+"---------------------------------------------------end---------------------------------------------------------------"
+
 external_destination = [[], []]
 for i in range(2):
     if len(external) != 0:
@@ -93,19 +97,74 @@ for i in range(len(external)):
     else:
         external_destination[1].append(external[i][0])
 
-#print(external_destination)
-            #desired_floor_downlist.append(elev_floor[k])
-   # desired_floor_uplist.sort()
-   #desired_floor_downlist.sort(reverse=True)'''
-elev_floor.clear()
-if dir_elevator == 1:
-    elev_floor.extend(desired_floor_uplist)
-    elev_floor.extend(desired_floor_downlist)
-else:
-    elev_floor.extend(desired_floor_downlist)
-    elev_floor.extend(desired_floor_uplist)
-# print(desired_floor_uplist, desired_floor_downlist)
-# print(elev_floor)
-move(start_floor, elev_floor)
-print("elevator is idel")
+for i in range(2):
+    if len(external) != 0:
+        for k in range(len(external)):
+            if starting_floor[i][1] == 1 and starting_floor[i][1] == external[k][1] and external[k][0] > starting_floor[i][0]:
+                external_destination[i].append(external[k])
+                external_destination[i].sort()
+            elif starting_floor[i][1] == 0 and starting_floor[i][1] == external[k][1] and external[k][0] < starting_floor[i][0]:
+                external_destination[i].append(external[k])
+                external_destination[i].sort(reverse=True)
+for i in range(len(external_destination)):
+    for j in range(len(external_destination[i])):
+        for k in range(len(external)):
+            if external_destination[i][j] == external[k]:
+                del external[k]
+                break
+print(external_destination)
+print(external)
+
+for i in range(len(external)):
+
+    a = abs(external[i][0] - external_destination[0][-1][0])
+    b = abs(external[i][0] - external_destination[1][-1][0])
+    if a < b:
+        external_destination[0].append(external[i])
+    else:
+        external_destination[1].append(external[i])
+
+print(external_destination)
+
+for i in range(2):
+    up = []
+    down = []
+    total = []
+    for j in range(len(external_destination[i])):
+        if starting_floor[i][1] == 1:
+            if external_destination[i][j][1] == 1:
+                up.append(external_destination[i][j][0])
+            else:
+                down.append(external_destination[i][j][0])
+        if starting_floor[i][1] == 0:
+            if external_destination[i][j][1] == 0:
+                down.append(external_destination[i][j][0])
+            else:
+                up.append(external_destination[i][j][0])
+    for l in range(len(elevator_floor[i])):
+        if starting_floor[i][1] == 1:
+            if starting_floor[i][0] < elevator_floor[i][l]:
+               up.append(elevator_floor[i][l])
+            else:
+               down.append((elevator_floor[i][l]))
+        if starting_floor[i][1] == 0:
+            if starting_floor[i][0] > elevator_floor[i][l]:
+                down.append((elevator_floor[i][l]))
+            else:
+                up.append(elevator_floor[i][l])
+
+    up.sort()
+    down.sort(reverse=True)
+    if starting_floor[i][1] == 1:
+        total.extend(up)
+        total.extend(down)
+    else:
+        total.extend(down)
+        total.extend(up)
+    destination.append(total)
+#print(destination)
+
+for i in range(2):
+    move(start_floor[i][0], destination[i])
+    print("elevator is idel")
 
