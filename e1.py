@@ -23,19 +23,17 @@ def move(current_floor, desired_floor):
         del desired_floor[0]
 
 
-elev_floor = []
+elevator_floor = []
 def elev_button(desired_floor):
-    elev_floor.append(desired_floor)
+    elevator_floor.append(desired_floor)
 
 
 external = []
 def floor_button(x):
     external.append(x)
 
-#elevator_no = int(input("enter no. of elevators"))
 
-
-"------------------------------------- provide initial data--------------------------------------------------------"
+"------------------------------------------- initial data input--------------------------------------------------------"
 total_floor = int(input("Enter no. of floors  "))
 starting_floor = []
 
@@ -51,7 +49,7 @@ for i in range(1,3):
     floor_direction.append(start_floor)
     floor_direction.append(dir_elevator)
     starting_floor.append(floor_direction)
-#print(starting_floor)
+
 for j in range(1,3):
     no_des = int(input(f"Enter no. of destinations from inside elevator {j} "))
     destination_list = []
@@ -60,7 +58,7 @@ for j in range(1,3):
         destination_list.append(destination_floor)
     destination_list = list(set(destination_list))
     elev_button(destination_list)
-#print(elev_floor)
+
 des = int(input("Enter no. of destinations from floors "))
 for _ in range(1, des+1):
     ext = []
@@ -73,30 +71,17 @@ for _ in range(1, des+1):
 
 "---------------------------------------------------end---------------------------------------------------------------"
 
-external_destination = [[], []]
-for i in range(2):
-    if len(external) != 0:
-        for k in range(len(external)):
-            if starting_floor[i][1] == 1 and starting_floor[i][1] == external[k][1] and external[k][0] > starting_floor[i][0]:
-                external_destination[i].append(external[k][0])
-            elif starting_floor[i][1] == 0 and starting_floor[i][1] == external[k][1] and external[k][0] < starting_floor[i][0]:
-                external_destination[i].append(external[k][0])
-for i in range(len(external_destination)):
-    for k in range(len(external)):
-        if external_destination[i][0] == external[k][0]:
-            del external[k]
-            break
-#print(external_destination)
-#print(external)
-for i in range(len(external)):
 
-    a = abs(external[i][0] - external_destination[0][-1])
-    b = abs(external[i][0] - external_destination[1][-1])
-    if a < b:
-        external_destination[0].append(external[i][0])
-    else:
-        external_destination[1].append(external[i][0])
 
+print(starting_floor)
+print(elevator_floor)
+print(external)
+#starting_floor = [[5,1], [8,0]]
+#elevator_floor = [[2,7], [9,4]]
+#external = [[3,1], [5,0], [12,1], [11,0], [10,1], [7,0]]
+
+external_destination = [[],[]]
+destination=[]
 for i in range(2):
     if len(external) != 0:
         for k in range(len(external)):
