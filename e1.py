@@ -73,9 +73,9 @@ for _ in range(1, des+1):
 
 
 
-print(starting_floor)
-print(elevator_floor)
-print(external)
+#print(starting_floor)
+#print(elevator_floor)
+#print(external)
 #starting_floor = [[5,1], [8,0]]
 #elevator_floor = [[2,7], [9,4]]
 #external = [[3,1], [5,0], [12,1], [11,0], [10,1], [7,0]]
@@ -97,8 +97,8 @@ for i in range(len(external_destination)):
             if external_destination[i][j] == external[k]:
                 del external[k]
                 break
-print(external_destination)
-print(external)
+#print(external_destination)
+#print(external)
 
 for i in range(len(external)):
 
@@ -109,7 +109,7 @@ for i in range(len(external)):
     else:
         external_destination[1].append(external[i])
 
-print(external_destination)
+#print(external_destination)
 
 for i in range(2):
     up = []
