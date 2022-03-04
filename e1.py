@@ -1,19 +1,19 @@
 import time
 
 
-def move(current_floor, desired_floor):
+def move(current_floor, desired_floor,x):
 
     while len(desired_floor) > 0:
         while desired_floor[0] != current_floor:
             if current_floor > desired_floor[0]:
-                print(f"elevator is on floor {current_floor}")
+                print(f"elevator {x} is on floor {current_floor}")
                 current_floor -= 1
-                print("elevator going down")
+                print(f"elevator {x} going down")
                 time.sleep(1)
             else:
-                print(f"elevator is on floor {current_floor}")
+                print(f"elevator {x} is on floor {current_floor}")
                 current_floor += 1
-                print("elevator going up")
+                print(f"elevator {x} going up")
                 time.sleep(1)
         print(f"reached floor {current_floor}")
         print("doors opening")
@@ -150,6 +150,6 @@ for i in range(2):
 #print(destination)
 
 for i in range(2):
-    move(start_floor[i][0], destination[i])
-    print("elevator is idel")
+    move(starting_floor[i][0], destination[i],i+1)
+    print(f"elevator {i+1} is idel")
 
