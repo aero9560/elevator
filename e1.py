@@ -34,6 +34,8 @@ def floor_button(x):
 
 
 "------------------------------------------- initial data input--------------------------------------------------------"
+
+no_elevator = int(input("Enter no. of elevators"))
 total_floor = int(input("Enter no. of floors  "))
 starting_floor = []
 
@@ -67,71 +69,91 @@ for _ in range(1, des+1):
     ext.append(des_floor)
     ext.append(direc)
     floor_button(ext)
-#print(external)
 
 "---------------------------------------------------end---------------------------------------------------------------"
 
 
+external_destination = []  # store external request data for sorting
+for _ in range(no_elevator):
+    external_destination.append([])
 
-#print(starting_floor)
-#print(elevator_floor)
-#print(external)
-#starting_floor = [[5,1], [8,0]]
-#elevator_floor = [[2,7], [9,4]]
-#external = [[3,1], [5,0], [12,1], [11,0], [10,1], [7,0]]
+destination = []    # store final data for moving elevator 
 
-external_destination = [[],[]]
-destination=[]
-for i in range(2):
-    if len(external) != 0:
-        for k in range(len(external)):
-            if starting_floor[i][1] == 1 and starting_floor[i][1] == external[k][1] and external[k][0] > starting_floor[i][0]:
-                external_destination[i].append(external[k])
-                external_destination[i].sort()
-            elif starting_floor[i][1] == 0 and starting_floor[i][1] == external[k][1] and external[k][0] < starting_floor[i][0]:
-                external_destination[i].append(external[k])
-                external_destination[i].sort(reverse=True)
+for i in range(len(external)):
+
+    b = []
+    c = []
+    for j in range(no_elevator):
+        a = []
+        if starting_floor[j][1] == external[i][1] == 1 and external[i][0] > starting_floor[j][0]:
+            a.append(abs(external[i][0] - starting_floor[j][0]))
+            a.append(j)
+            b.append(a)
+        elif starting_floor[j][1] == external[i][1] == 0 and external[i][0] < starting_floor[j][0]:
+            a.append(abs(external[i][0] - starting_floor[j][0]))
+            a.append(j)
+            b.append(a)
+    if len(b) != 0:
+        c = min(b, key=lambda x: x[0])
+        external_destination[c[1]].append(external[i])
+
+for i in range(no_elevator):
+    if starting_floor[i][1] == 1:
+        external_destination[i].sort()
+    else:
+        external_destination[i].sort(reverse=True)
+
 for i in range(len(external_destination)):
     for j in range(len(external_destination[i])):
         for k in range(len(external)):
             if external_destination[i][j] == external[k]:
                 del external[k]
                 break
-#print(external_destination)
-#print(external)
 
+
+"=============for finding which elevator move for service at external request==========================="
 for i in range(len(external)):
 
-    a = abs(external[i][0] - external_destination[0][-1][0])
-    b = abs(external[i][0] - external_destination[1][-1][0])
-    if a < b:
-        external_destination[0].append(external[i])
-    else:
-        external_destination[1].append(external[i])
+    b = []
+    c = []
+    for j in range(no_elevator):
+        if len(external_destination[j]) != 0:
+            a = []
+            a.append(abs(external[i][0] - external_destination[j][-1][0]))
+            a.append(j)
+            b.append(a)
+    if len(b) != 0:
+        c = min(b, key=lambda x: x[0])
+        external_destination[c[1]].append(external[i])
 
-#print(external_destination)
+"==========================================================================================================="
 
-for i in range(2):
+
+
+"-------------------------------------order in which which floor request is serviced first----------------------------------------"
+
+for i in range(no_elevator):
     up = []
     down = []
     total = []
-    for j in range(len(external_destination[i])):
-        if starting_floor[i][1] == 1:
-            if external_destination[i][j][1] == 1:
-                up.append(external_destination[i][j][0])
-            else:
-                down.append(external_destination[i][j][0])
-        if starting_floor[i][1] == 0:
-            if external_destination[i][j][1] == 0:
-                down.append(external_destination[i][j][0])
-            else:
-                up.append(external_destination[i][j][0])
+    if len(external_destination[i]) != 0:
+        for j in range(len(external_destination[i])):
+            if starting_floor[i][1] == 1:
+                if external_destination[i][j][1] == 1:
+                    up.append(external_destination[i][j][0])
+                else:
+                    down.append(external_destination[i][j][0])
+            if starting_floor[i][1] == 0:
+                if external_destination[i][j][1] == 0:
+                    down.append(external_destination[i][j][0])
+                else:
+                    up.append(external_destination[i][j][0])
     for l in range(len(elevator_floor[i])):
         if starting_floor[i][1] == 1:
             if starting_floor[i][0] < elevator_floor[i][l]:
-               up.append(elevator_floor[i][l])
+                up.append(elevator_floor[i][l])
             else:
-               down.append((elevator_floor[i][l]))
+                down.append((elevator_floor[i][l]))
         if starting_floor[i][1] == 0:
             if starting_floor[i][0] > elevator_floor[i][l]:
                 down.append((elevator_floor[i][l]))
@@ -147,9 +169,9 @@ for i in range(2):
         total.extend(down)
         total.extend(up)
     destination.append(total)
-#print(destination)
+"---------------------------------------------------------------------------------------------------------------------"
 
-for i in range(2):
+for i in range(no_elevator):
     move(starting_floor[i][0], destination[i],i+1)
     print(f"elevator {i+1} is idel")
 
